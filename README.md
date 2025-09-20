@@ -20,6 +20,10 @@ mvn compile
 mvn exec:java
 ```
 
+## Step 4: Open the web app
+Open your browser and navigate to:
+[http://localhost:8080](http://localhost:8080)
+
 ## Notes:
 If Java is not installed, install Java:
 

@@ -1,11 +1,14 @@
 package introdb;
 
-import io.javalin.Javalin;
-import io.javalin.http.Context;
-import java.sql.*;
-import java.time.Instant;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 /**
  * This is a simple web application for a coffee shop that allows users to register, log in,
@@ -16,12 +19,6 @@ public class App {
 
     // DuckDB connection string for local file-based DB
     private static final String CONNECTION = "jdbc:duckdb:./coffee.db";
-
-    // SQLLite connection string for local file-based DB
-    // private static final String CONNECTION = "jdbc:sqlite:./coffee.db";
-    
-    // MySQL connection string for remote DB
-    // private static final String CONNECTION = "jdbc:mysql://localhost:3306/coffee?user=root&password=secret";
 
     private record Product(String productName, String description, int price) {}
     private record Purchase(String userName, String productName, String purchaseTime) {}
@@ -75,8 +72,8 @@ public class App {
      * @return true if insertion was successful, false otherwise
      */
     private static boolean insertUser(String username, String email, String password) {
-       // TODO: insert the new user into the database
-       return true;
+        // TODO: insert the new user into the database
+        return true;
     }
 
     /**
@@ -107,8 +104,8 @@ public class App {
      * @return true if insertion was successful, false otherwise
      */
     private static boolean insertPurchase(String username, String productname) {
-       // TODO: insert the new purchase into the database using the current timestamp
-       return true;
+        // TODO: insert the new purchase into the database using the current timestamp
+        return true;
     }
 
     /**

@@ -4,7 +4,7 @@ To build and start the Coffee Shop web app, you need to have the following softw
 installed: 
 - Java
 - Maven
-- (Optional) Git
+- Git
 
 We give installation instructions for Linux and the Windows for Linux Subsystem. 
 

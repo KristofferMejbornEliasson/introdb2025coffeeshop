@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +84,8 @@ public class App {
     private static List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION);
-             PreparedStatement ps = conn.prepareStatement("select productname, description, price from product");
-             ResultSet rs = ps.executeQuery()) {
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("select productname, description, price from product")) {
             while (rs.next()) {
                 String productname = rs.getString("productname");
                 String description = rs.getString("description");
@@ -115,8 +116,8 @@ public class App {
     private static List<Purchase> getAllPurchases() {
         List<Purchase> purchases = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION);
-             PreparedStatement ps = conn.prepareStatement("select username, productname, purchasetime from purchase order by purchasetime desc");
-             ResultSet rs = ps.executeQuery()) {
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("select username, productname, purchasetime from purchase order by purchasetime desc")) {
             while (rs.next()) {
                 String username = rs.getString("username");
                 String productname = rs.getString("productname");

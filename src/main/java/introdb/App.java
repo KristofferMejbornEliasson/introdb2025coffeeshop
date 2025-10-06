@@ -1,11 +1,7 @@
 package introdb;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import io.javalin.Javalin;
@@ -74,7 +70,18 @@ public class App {
      */
     private static boolean insertUser(String username, String email, String password) {
         // TODO: insert the new user into the database
-        return true;
+        try(Connection conn = DriverManager.getConnection(CONNECTION);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO user VALUES (?, ?, ?)")) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     /**
@@ -106,7 +113,17 @@ public class App {
      */
     private static boolean insertPurchase(String username, String productname) {
         // TODO: insert the new purchase into the database using the current timestamp
-        return true;
+        try(Connection conn = DriverManager.getConnection(CONNECTION);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO purchase values (?, ?, ?)")) {
+            stmt.setString(1, Instant.now().toString());
+            stmt.setString(2, username);
+            stmt.setString(3, productname);
+            stmt.executeUpdate();
+            return true;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -137,7 +154,19 @@ public class App {
      */
     private static List<Purchase> getUserPurchases(String username) {
         List<Purchase> purchases = new ArrayList<>();
-        // TODO: query the database for purchases by this user ordered by time descending, and populate the purchases list
+        try (Connection conn = DriverManager.getConnection(CONNECTION);
+             PreparedStatement st = conn.prepareStatement("select username, productname, purchasetime from purchase where username = ? values (?) order by purchasetime desc");
+             ResultSet rs = st.executeQuery();
+        ) {
+             st.setString(1, username);
+            while (rs.next()) {
+                String productname = rs.getString("productname");
+                String purchasetime = rs.getString("purchasetime");
+                purchases.add(new Purchase(username, productname, purchasetime));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return purchases;
     }
 
